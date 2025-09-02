@@ -2,6 +2,6 @@
 
 export default function Welcome() {
     return (
-        <Text>Welcome screen</Text>
+        <Text>permissions screen</Text>
     )
 }
