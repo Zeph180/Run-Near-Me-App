@@ -1,8 +1,13 @@
 ﻿import { ImageBackground, StyleSheet, View } from "react-native";
 import { Button } from "@/components/Button";
 import { AppText } from "@/components/AppText";
+import { navigate } from "expo-router/build/global-state/routing";
 
 export default function Welcome() {
+  const getStartedPress = () => {
+    navigate("/auth/login");
+  };
+
   return (
     <ImageBackground
       source={require("../../../assets/welcomeJogger.png")}
@@ -17,7 +22,7 @@ export default function Welcome() {
         </AppText>
         <Button
           title="Get Started"
-          onPress={() => {}}
+          onPress={() => getStartedPress()}
           theme={"lime"}
           style={{ width: "80%" }}
         />
