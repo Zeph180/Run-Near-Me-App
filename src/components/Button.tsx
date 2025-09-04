@@ -5,7 +5,7 @@ import { cn } from "../utils/cn";
 type ButtonProps = {
   title: string;
   onPress?: () => void;
-  theme?: "primary" | "secondary" | "tertiary";
+  theme?: "primary" | "secondary" | "tertiary" | "lime";
   disabled?: boolean;
 } & PressableProps;
 
@@ -25,6 +25,7 @@ export function Button({
         theme === "primary" && "bg-[#007AFF] border-[#007AFF]",
         theme === "secondary" && "bg-white border-gray-300",
         theme === "tertiary" && "bg-transparent border-transparent",
+        theme === "lime" && "bg-[#a4ff53] border-[#a4ff53]",
         disabled && "opacity-50",
       )}
       disabled={disabled}
@@ -36,6 +37,7 @@ export function Button({
           theme === "secondary" && "text-black",
           theme === "primary" && "text-white",
           theme === "tertiary" && "text-gray-800",
+          theme === "lime" && "text-black",
         )}
       >
         {title} {disabled}

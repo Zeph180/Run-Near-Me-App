@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
-export default function () {
-    return (
-        <Text>Profile screen</Text>
-    )
+export default function profile() {
+  return <Text>Profile screen</Text>;
 }

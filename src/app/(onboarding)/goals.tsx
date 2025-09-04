@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
 export default function Welcome() {
-    return (
-        <Text>Welcome screen</Text>
-    )
+  return <Text>Welcome screen</Text>;
 }

@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
-export default function () {
-    return (
-        <Text>Challenge screen</Text>
-    )
+export default function challenge() {
+  return <Text>Challenge screen</Text>;
 }
