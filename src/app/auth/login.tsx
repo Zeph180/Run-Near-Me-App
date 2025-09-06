@@ -18,64 +18,90 @@ const handleLoginWithGoogle = () => {
 };
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email: string; password: string }>({
-    email,
+  const [errors, setErrors] = useState<{ username: string; password: string }>({
+    username,
     password,
   });
 
-  const validate = () => {
+  const handleLogin = () => {
     let valid = true;
     let tempErrors = { email: "", password: "" };
 
-    if (!email) {
+    if (!username) {
       tempErrors.email = "Email is required";
+      errors.username = tempErrors.email;
+      valid = false;
+    }
+
+    if (!password) {
+      tempErrors.email = "Password is required";
+      errors.password = tempErrors.password;
       valid = false;
     }
   };
 
+  const handleInputChange = (name: string, value: string) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: value ? "" : "This field is required",
+    }));
+
+    setusername(value);
+    setPassword(value);
+  };
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    // <LinearGradient colors={["#2a2829", "#060606"]} style={styles.container}>
+    <LinearGradient
+      colors={[
+        "#363636",
+        "#313131",
+        "#2c2c2c",
+        "#272727",
+        "#222222",
+        "#1d1d1d",
+      ]}
+      locations={[0, 0.2, 0.4, 0.6, 0.8, 1]}
       style={styles.container}
     >
-      <LinearGradient
-        colors={["#2a2829", "#181718", "#040404"]}
-        style={styles.gradient}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyBoardView}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            <Link href="/auth/sign-up" asChild>
-              <AppText center size={"xl"}>
-                Login to continue
-              </AppText>
-            </Link>
+          <ScrollView
+            contentContainerStyle={styles.scrollViewContent}
+            showsVerticalScrollIndicator={false}
+          >
+            <AppText center size={"xl"}>
+              Login to continue
+            </AppText>
 
             <FormInput
-              label="Email"
-              value={email}
-              onChangeText={() => setErrors}
+              label="Username"
+              value={username}
+              onChangeText={() => handleInputChange("username", username)}
               placeholder="Username"
               secureTextEntry={false}
               autoCapitalize="none"
-              keyboardType="email-address"
-              error={errors.email}
+              error={errors.username}
             />
             <FormInput
               label="Password"
               value={password}
-              onChangeText={() => console.log(password)}
-              placeholder="Password"
+              onChangeText={() => handleInputChange("password", password)}
+              keyboardType="default"
               secureTextEntry={true}
               autoCapitalize="none"
-              keyboardType="email-address"
               error={errors.password}
+              placeholder="Password"
             />
 
             <Button
               title="Login"
-              onPress={validate}
+              onPress={() => handleLogin()}
               theme="lime"
               style={styles.button}
             />
@@ -90,12 +116,14 @@ export default function Login() {
 
             <AppText center>
               Don{"'"} have an account?{" "}
-              <Link href="/auth/sign-up>">SIGNUP</Link>
+              <Link href="/auth/sign-up>" style={styles.signUpLink}>
+                SIGNUP
+              </Link>
             </AppText>
           </ScrollView>
         </TouchableWithoutFeedback>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 }
 
@@ -103,7 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  gradient: {
+  keyBoardView: {
     flex: 1,
   },
   scrollViewContent: {
@@ -111,14 +139,16 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
+    minHeight: "100%",
   },
   signupText: {
     fontWeight: "bold",
     color: "#fff",
   },
   button: {
-    width: "89%",
+    width: "84%",
     marginTop: 20,
     borderRadius: 13,
   },
+  signUpLink: {},
 });
