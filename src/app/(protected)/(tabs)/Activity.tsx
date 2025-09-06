@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
-export default function () {
-    return (
-        <Text>Activity screen</Text>
-    )
+export default function activity() {
+  return <Text>Activity screen</Text>;
 }

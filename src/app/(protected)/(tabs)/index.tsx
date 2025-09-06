@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
-export default function () {
-    return (
-        <Text>Home screen</Text>
-    )
+export default function home() {
+  return <Text>Home screen</Text>;
 }

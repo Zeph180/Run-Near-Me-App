@@ -1,7 +1,5 @@
-﻿import {Text} from "react-native";
+﻿import { Text } from "react-native";
 
 export default function Welcome() {
-    return (
-        <Text>permissions screen</Text>
-    )
+  return <Text>permissions screen</Text>;
 }
