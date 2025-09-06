@@ -7,11 +7,12 @@
   TouchableWithoutFeedback,
 } from "react-native";
 import { AppText } from "@/components/AppText";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import FormInput from "@/components/FormInput";
 import { Button } from "@/components/Button";
-import { useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
+import { useContext, useState } from "react";
+import { AppLinearGradient } from "@/components/AppLinearGradient";
+import { AuthContext } from "@/utils/authContext";
 
 const handleLoginWithGoogle = () => {
   console.log("Login with Google!");
@@ -24,6 +25,7 @@ export default function Login() {
     username,
     password,
   });
+  const authContext = useContext(AuthContext);
 
   const handleLogin = () => {
     let valid = true;
@@ -40,32 +42,16 @@ export default function Login() {
       errors.password = tempErrors.password;
       valid = false;
     }
-  };
 
-  const handleInputChange = (name: string, value: string) => {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: value ? "" : "This field is required",
-    }));
-
-    setusername(value);
-    setPassword(value);
+    //TODO: add login logic here
+    if (valid) {
+      authContext.login();
+      router.replace("(protected)");
+    }
   };
 
   return (
-    // <LinearGradient colors={["#2a2829", "#060606"]} style={styles.container}>
-    <LinearGradient
-      colors={[
-        "#363636",
-        "#313131",
-        "#2c2c2c",
-        "#272727",
-        "#222222",
-        "#1d1d1d",
-      ]}
-      locations={[0, 0.2, 0.4, 0.6, 0.8, 1]}
-      style={styles.container}
-    >
+    <AppLinearGradient>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyBoardView}
@@ -82,7 +68,7 @@ export default function Login() {
             <FormInput
               label="Username"
               value={username}
-              onChangeText={() => handleInputChange("username", username)}
+              onChangeText={setusername}
               placeholder="Username"
               secureTextEntry={false}
               autoCapitalize="none"
@@ -91,7 +77,7 @@ export default function Login() {
             <FormInput
               label="Password"
               value={password}
-              onChangeText={() => handleInputChange("password", password)}
+              onChangeText={setPassword}
               keyboardType="default"
               secureTextEntry={true}
               autoCapitalize="none"
@@ -117,13 +103,13 @@ export default function Login() {
             <AppText center>
               Don{"'"} have an account?{" "}
               <Link href="/auth/sign-up>" style={styles.signUpLink}>
-                SIGNUP
+                <AppText color={"lime"}>SIGNUP</AppText>
               </Link>
             </AppText>
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </AppLinearGradient>
   );
 }
 
@@ -141,6 +127,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     minHeight: "100%",
   },
+  orText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "500",
+    marginVertical: 15,
+  },
   signupText: {
     fontWeight: "bold",
     color: "#fff",
@@ -150,5 +142,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 13,
   },
-  signUpLink: {},
+  signUpLink: {
+    color: "#9ACD32",
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
 });

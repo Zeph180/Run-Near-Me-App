@@ -5,7 +5,7 @@ type AppTextProps = {
   children: React.ReactNode;
   size?: "small" | "medium" | "large" | "heading" | "xl" | "xxl";
   bold?: boolean;
-  color?: "primary" | "secondary" | "tertiary" | "white";
+  color?: "primary" | "secondary" | "tertiary" | "white" | "lime";
   center?: boolean;
   className?: string;
 };
@@ -32,6 +32,7 @@ export function AppText({
         color === "secondary" && "text-gray-500",
         color === "tertiary" && "text-gray-400",
         color === "white" && "text-white",
+        color === "lime" && "#a4ff53",
         center && "text-center",
         className,
       )}

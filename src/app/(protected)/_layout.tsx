@@ -1,23 +1,23 @@
 import { Redirect, Stack } from "expo-router";
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "@/utils/authContext";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
 };
 
-export const isLoggedIn = false;
-export const isFirstTime = true;
+export default function ProtectedLayout() {
+  const authcontext = useContext(AuthContext);
 
-export default function RootLayout() {
-  if (isFirstTime) {
+  if (authcontext.isFirstTime) {
     console.log("is first time");
     return <Redirect href="/welcome" />;
   }
-  if (!isLoggedIn) {
-    console.log("is not logged in : ", isLoggedIn);
+  if (!authcontext.isLoggedIn) {
+    console.log("is not logged in : ", authcontext.isLoggedIn);
     return <Redirect href="/auth/login" />;
   }
-  console.log("is not logged in ww: ", isLoggedIn);
+  console.log("is not logged in ww: ", authcontext.isLoggedIn);
 
   return (
     <Stack>
