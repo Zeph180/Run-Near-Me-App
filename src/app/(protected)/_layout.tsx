@@ -9,6 +9,10 @@ export const unstable_settings = {
 export default function ProtectedLayout() {
   const authcontext = useContext(AuthContext);
 
+  if (!authcontext.isReady) {
+    return null;
+  }
+
   if (authcontext.isFirstTime) {
     console.log("is first time");
     return <Redirect href="/welcome" />;
