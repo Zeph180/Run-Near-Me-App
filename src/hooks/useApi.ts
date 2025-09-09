@@ -1,52 +1,26 @@
-﻿import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useState } from "react";
 
-export function useApiCall<T>(
-  apiFunction: () => Promise<T>,
-  dependencies: any[] = [],
-) {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const result = await apiFunction();
-      setData(result);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  }, dependencies);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const refetch = useCallback(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return { data, error, isLoading, refetch };
-}
-
-export function useApiMutatuion<T, P = any>(
+export function useApiMutation<T, P = any>(
   mutationFunction: (params: P) => Promise<T>,
 ) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log("mutation function: ", mutationFunction);
+
   const mutate = useCallback(
-    async (params: P) => {
+    async (params: P): Promise<T | null> => {
       try {
         setIsLoading(true);
         setError(null);
-        const result = await mutationFunction(params);
-        return result;
+
+        return await mutationFunction(params);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
+        const errorMessage =
+          err instanceof Error ? err.message : "An error occurred";
+        setError(errorMessage);
+        console.error("Mutation error:", err);
+        return null;
       } finally {
         setIsLoading(false);
       }
@@ -54,5 +28,5 @@ export function useApiMutatuion<T, P = any>(
     [mutationFunction],
   );
 
-  return { mutate, error, isLoading };
+  return { mutate, isLoading, error };
 }

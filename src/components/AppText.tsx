@@ -26,7 +26,7 @@ export function AppText({
         size === "large" && "text-lg mb-4",
         size === "xl" && "text-xl mb-4",
         size === "xxl" && "text-3xl mb-3",
-        size === "heading" && "text-xl mb-5",
+        size === "heading" && "text-xl mb-3",
         bold && "font-bold",
         color === "primary" && "text-black",
         color === "secondary" && "text-gray-500",

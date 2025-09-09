@@ -11,17 +11,20 @@ export interface SignupRequest extends LoginRequest {
 }
 
 export class AuthService extends ApiBaseService {
-  async login(credential: LoginRequest): Promise<LoginResponse> {
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    console.log("Auth.login called with :", JSON.stringify(credentials));
     return this.makeRequest<LoginResponse>("/auth/login", {
       method: "POST",
-      body: JSON.stringify(credential),
+      data: JSON.stringify(credentials),
     });
   }
 
-  async Signup(credential: SignupRequest): Promise<SignupResponse> {
+  async signup(credential: SignupRequest): Promise<SignupResponse> {
     return this.makeRequest<SignupResponse>("/auth/login", {
       method: "POST",
-      body: JSON.stringify(credential),
+      data: JSON.stringify(credential),
     });
   }
 }
+
+export const authService = new AuthService();

@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <React.Fragment>
       <StatusBar style="auto" />
-      <Tabs />
+      <Tabs screenOptions={{ headerShown: false, animation: "none" }} />
     </React.Fragment>
   );
 }

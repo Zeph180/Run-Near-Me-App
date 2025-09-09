@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { SplashScreen, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LoginResponse } from "@/types/responses/authResponses";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -8,17 +9,20 @@ type AuthState = {
   isLoggedIn: boolean;
   isFirstTime: boolean;
   isReady: boolean;
-  login: () => void;
+  login: (user: LoginResponse) => void;
   logout: () => void;
 };
 
 const authStorageKey = "auth-key";
+const firstTimeStorageKey = "first-time";
+const profileStorageKey = "profile";
+const accountStorageKey = "account";
 
 export const AuthContext = createContext<AuthState>({
   isLoggedIn: false,
   isFirstTime: false,
   isReady: false,
-  login: () => {},
+  login: (user: LoginResponse) => {},
   logout: () => {},
 });
 
@@ -28,25 +32,46 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [isReady, setIsReady] = useState(false);
   const router = useRouter();
 
-  const storeAuthState = (newState: { isLoggedIn: boolean }) => {
+  const storeAuthState = async (newState: LoginResponse) => {
     try {
-      const jsonValue = JSON.stringify(newState);
-      AsyncStorage.setItem(authStorageKey, jsonValue);
+      console.log("storing auth state: ", newState);
+
+      const tokenValue = JSON.stringify(newState.data.token);
+      const userValue = JSON.stringify(newState);
+      const profile = newState?.data?.profile;
+      const account = newState?.data?.account;
+
+      await Promise.all([
+        AsyncStorage.setItem(authStorageKey, tokenValue),
+        AsyncStorage.setItem(profileStorageKey, JSON.stringify(profile)),
+        AsyncStorage.setItem(accountStorageKey, JSON.stringify(account)),
+        AsyncStorage.setItem(firstTimeStorageKey, "false"),
+      ]);
     } catch (error) {
       console.error("Error storing auth state:", error);
     }
   };
 
-  const login = () => {
+  const login = async (user: LoginResponse) => {
     setIsLoggedIn(true);
-    storeAuthState({ isLoggedIn: true });
+    await storeAuthState(user);
     router.replace("/");
   };
 
-  const logout = () => {
+  const logout = async () => {
     setIsLoggedIn(false);
     setIsFirstTime(false);
-    storeAuthState({ isLoggedIn: false });
+    const keys = [
+      authStorageKey,
+      firstTimeStorageKey,
+      profileStorageKey,
+      accountStorageKey,
+    ];
+    try {
+      await AsyncStorage.multiRemove(keys);
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
     router.replace("/auth/login");
   };
 

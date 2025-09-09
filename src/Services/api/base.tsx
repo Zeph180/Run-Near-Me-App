@@ -1,47 +1,64 @@
 ﻿import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-const API_URL = "http://localhost:5133";
+const API_URL = "http://10.0.2.2:5133/api";
 
 export class ApiBaseService {
-  private baseUrl = API_URL;
+  protected baseUrl = API_URL;
+  protected api: AxiosInstance;
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+  constructor(baseUrl: string = API_URL) {
+    this.api = axios.create({
+      baseURL: baseUrl,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    this.api.interceptors.request.use(
+      async (config) => {
+        const token = AsyncStorage.getItem("auth-key");
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
+
+    this.api.interceptors.response.use(
+      (response) => response,
+      async (error: AxiosError) => {
+        if (error.response?.status === 401) {
+          console.log("unauthorized");
+          await AsyncStorage.removeItem("auth-key");
+          router.replace("/auth/login");
+          throw new Error("Session expired. Please log in again.");
+        }
+
+        const message =
+          (error.response?.data as any)?.message ||
+          error.message ||
+          "Failed to fetch data";
+        throw new Error(message);
+      },
+    );
   }
 
-  public async makeRequest<T>(
+  protected async makeRequest<T>(
     endpoint: string,
-    options: RequestInit = {},
+    options: AxiosRequestConfig = {},
   ): Promise<T> {
     try {
-      const token = await AsyncStorage.getItem("auth-key");
-
-      const config: RequestInit = {
+      console.log("making request to url: ", `${this.baseUrl}${endpoint}`);
+      const response = await this.api.request<T>({
+        url: endpoint,
         ...options,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer",
-          ...(token && { Authorization: `Bearer ${token}` }),
-          ...options.headers,
-        },
-      };
-
-      const response = await fetch(`${this.baseUrl}${endpoint}`, config);
-
-      if (response.status === 401) {
-        console.log("unauthorized");
-        await AsyncStorage.removeItem("auth-key");
-        router.replace("/auth/login");
-        throw new Error("Session expired. Please log in again.");
-      }
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.log("error data: ", errorData);
-        throw new Error(errorData?.message || "Failed to fetch data");
-      }
-
-      return response.json();
+      });
+      return response.data;
     } catch (error) {
       console.log("error: ", error);
       throw error;

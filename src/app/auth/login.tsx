@@ -13,42 +13,76 @@ import { Button } from "@/components/Button";
 import { useContext, useState } from "react";
 import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { AuthContext } from "@/utils/authContext";
+import { authService, LoginRequest } from "@/Services/api/Auth";
+import { useApiMutation } from "@/hooks/useApi";
+import { validateEmail } from "@/utils/emailValidation";
 
 const handleLoginWithGoogle = () => {
   console.log("Login with Google!");
 };
 
 export default function Login() {
-  const [username, setusername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ username: string; password: string }>({
-    username,
-    password,
+  const [errors, setErrors] = useState<{ email: string; password: string }>({
+    email: "",
+    password: "",
   });
   const authContext = useContext(AuthContext);
 
-  const handleLogin = () => {
+  const {
+    mutate: loginUser,
+    isLoading,
+    error,
+  } = useApiMutation((data) => authService.login(data));
+
+  async function handleLogin() {
     let valid = true;
     let tempErrors = { email: "", password: "" };
 
-    if (!username) {
-      tempErrors.email = "Email is required";
-      errors.username = tempErrors.email;
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      tempErrors.email = emailValidation.error;
       valid = false;
     }
 
-    if (!password) {
-      tempErrors.email = "Password is required";
-      errors.password = tempErrors.password;
+    if (!password.trim()) {
+      tempErrors.password = "Password is required";
       valid = false;
     }
 
-    //TODO: add login logic here
-    if (valid) {
-      authContext.login();
+    setErrors(tempErrors);
+    if (!valid) return;
+
+    const credentials: LoginRequest = {
+      email,
+      password,
+    };
+
+    try {
+      const result = await loginUser(credentials);
+
+      if (!result) {
+        console.log("Login result is null");
+        return;
+      }
+
+      if (result.error) {
+        console.log("Login error: ", result.error);
+        return;
+      }
+
+      if (result.statusCode !== 200 || !result.data) {
+        console.log("Login failed or returned invalid data");
+        return;
+      }
+
+      authContext.login(result);
       router.replace("(protected)");
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }
 
   return (
     <AppLinearGradient>
@@ -66,13 +100,15 @@ export default function Login() {
             </AppText>
 
             <FormInput
-              label="Username"
-              value={username}
-              onChangeText={setusername}
-              placeholder="Username"
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your email"
               secureTextEntry={false}
               autoCapitalize="none"
-              error={errors.username}
+              error={errors.email}
+              keyboardType="email-address"
+              editable={!isLoading}
             />
             <FormInput
               label="Password"
@@ -83,10 +119,11 @@ export default function Login() {
               autoCapitalize="none"
               error={errors.password}
               placeholder="Password"
+              editable={!isLoading}
             />
 
             <Button
-              title="Login"
+              title={isLoading ? "Signing in..." : "Login"}
               onPress={() => handleLogin()}
               theme="lime"
               style={styles.button}
