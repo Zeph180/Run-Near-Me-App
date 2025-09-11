@@ -4,6 +4,7 @@ import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { PageHeading } from "@/components/PageHeading";
 import { AppText } from "@/components/AppText";
 import { AuthContext } from "@/utils/authContext";
+import { FameCard } from "@/components/FameCard";
 
 export default function Profile() {
   const { user, profile, account, token, isLoggedIn } = useContext(AuthContext);
@@ -32,6 +33,26 @@ export default function Profile() {
           </AppText>
 
           <AppText center>{profile?.city}</AppText>
+
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <FameCard
+              title="Weight"
+              value={profile?.weight?.toString() || ""}
+              unit="KGs"
+              border="right"
+            />
+            <FameCard
+              title="Height"
+              value={profile?.height?.toString() || ""}
+              unit="CM"
+              border="right"
+            />
+            <FameCard
+              title="Age"
+              value={profile?.age?.toString() || ""}
+              unit="Yrs"
+            />
+          </View>
         </View>
       </ScrollView>
     </AppLinearGradient>
