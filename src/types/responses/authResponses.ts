@@ -1,29 +1,12 @@
 ﻿import { BaseResponse } from "@/types/responses/BaseResponse";
-import { NotificationResponse } from "@/types/responses/notification";
+import { Account } from "@/types/responses/Account";
+import { Profile } from "@/types/responses/Profile";
 
 export interface LoginResponse extends BaseResponse {
   data: {
     token: string;
-    account: {
-      runnerId: string;
-      email: string;
-      name: string;
-    };
-    profile: {
-      runnerId: string;
-      nickName: string;
-      phoneNumber: string;
-      address: string;
-      city: string;
-      state: string;
-      age: number;
-      height: number;
-      weight: number;
-      goal: string;
-      activityLevel: string;
-      goalDate: string;
-      notifications: [NotificationResponse];
-    };
+    account: Account;
+    profile: Profile;
   };
 }
 

@@ -26,7 +26,7 @@ export function PageHeading({
       </View>
 
       <Pressable onPress={() => {}} disabled={hasNotification}>
-        <Octicons name="bell-fill" size={30} color="gray" />
+        <Octicons name="bell-fill" size={30} color="white" />
       </Pressable>
     </View>
   );

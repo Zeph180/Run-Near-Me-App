@@ -7,7 +7,7 @@
   TouchableWithoutFeedback,
 } from "react-native";
 import { AppText } from "@/components/AppText";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import FormInput from "@/components/FormInput";
 import { Button } from "@/components/Button";
 import { useContext, useState } from "react";
@@ -78,7 +78,6 @@ export default function Login() {
       }
 
       authContext.login(result);
-      router.replace("(protected)");
     } catch (error) {
       console.log(error);
     }
