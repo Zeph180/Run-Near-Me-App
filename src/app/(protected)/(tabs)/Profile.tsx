@@ -1,13 +1,45 @@
-﻿import { useContext } from "react";
+﻿import { useContext, useState } from "react";
 import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { PageHeading } from "@/components/PageHeading";
 import { AppText } from "@/components/AppText";
 import { AuthContext } from "@/utils/authContext";
 import { FameCard } from "@/components/FameCard";
+import { FameCardVertical } from "@/components/FameCardVertical";
+import FameCardVerticalProps from "@/types/FameCardVertProps";
+import { ProgressChart } from "@/components/ProgressChart";
 
 export default function Profile() {
   const { user, profile, account, token, isLoggedIn } = useContext(AuthContext);
+  const [selectedRange, setSelectedRange] = useState<string>("Weekly");
+  const [range, setRange] = useState("Weekly");
+
+  const vertCards: FameCardVerticalProps[] = [
+    {
+      icon: "clock-time-four",
+      value: "21",
+      label: "Hours",
+      unit: "Hours",
+    },
+    {
+      icon: "go-kart-track",
+      value: "184",
+      label: "Total Distance",
+      unit: "KMs",
+    },
+    {
+      icon: "fire",
+      value: "1728",
+      label: "Total Calories Burned",
+      unit: "Kcal",
+    },
+    {
+      icon: "heart-pulse",
+      value: "75",
+      label: "Heart Rate",
+      unit: "BPM",
+    },
+  ];
 
   return (
     <AppLinearGradient>
@@ -53,6 +85,30 @@ export default function Profile() {
               unit="Yrs"
             />
           </View>
+
+          <View style={styles.grid}>
+            {vertCards.map((card, index) => (
+              <View key={index}>
+                <FameCardVertical
+                  value={card.value}
+                  label={card.label}
+                  unit={card.unit}
+                  icon={card.icon}
+                />
+              </View>
+            ))}
+          </View>
+        </View>
+
+        <View>
+          <ProgressChart
+            title="Progress Chart"
+            subtitle="Step count of this week"
+            selectedRange={range}
+            onRangeChange={setRange}
+            data={[200, 300, 50, 0, 320, 400]}
+            labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
+          />
         </View>
       </ScrollView>
     </AppLinearGradient>
@@ -85,5 +141,12 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 70,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 16,
+    marginTop: 60,
   },
 });

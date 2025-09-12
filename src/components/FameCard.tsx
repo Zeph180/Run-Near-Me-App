@@ -48,7 +48,7 @@ export const FameCard = ({
 
   return (
     <View style={[styles.container, getBorderStyle()]}>
-      <AppText color="lime" size="xl">
+      <AppText color="lime" size="medium">
         {title}
       </AppText>
       <AppText color="white" size="xl" center>

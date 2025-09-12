@@ -2,7 +2,7 @@
 import { router } from "expo-router";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
 
-const API_URL = "http://10.0.2.2:5133/api";
+const API_URL = "http://10.0.2.2/Runnearme/api";
 
 export class ApiBaseService {
   protected baseUrl = API_URL;
