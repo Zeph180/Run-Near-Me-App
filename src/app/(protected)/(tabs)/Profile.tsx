@@ -11,7 +11,6 @@ import { ProgressChart } from "@/components/ProgressChart";
 
 export default function Profile() {
   const { user, profile, account, token, isLoggedIn } = useContext(AuthContext);
-  const [selectedRange, setSelectedRange] = useState<string>("Weekly");
   const [range, setRange] = useState("Weekly");
 
   const vertCards: FameCardVerticalProps[] = [
@@ -148,5 +147,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 16,
     marginTop: 60,
+    marginBottom: 30,
   },
 });
