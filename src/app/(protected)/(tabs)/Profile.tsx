@@ -1,5 +1,5 @@
 ﻿import { useContext, useState } from "react";
-import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Button, Image, ScrollView, StyleSheet, View } from "react-native";
 import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { PageHeading } from "@/components/PageHeading";
 import { AppText } from "@/components/AppText";
@@ -10,7 +10,8 @@ import FameCardVerticalProps from "@/types/FameCardVertProps";
 import { ProgressChart } from "@/components/ProgressChart";
 
 export default function Profile() {
-  const { user, profile, account, token, isLoggedIn } = useContext(AuthContext);
+  const { user, profile, account, token, isLoggedIn, logout } =
+    useContext(AuthContext);
   const [range, setRange] = useState("Weekly");
 
   const vertCards: FameCardVerticalProps[] = [
@@ -109,6 +110,8 @@ export default function Profile() {
             labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
           />
         </View>
+
+        <Button title="Logout" onPress={() => logout()} />
       </ScrollView>
     </AppLinearGradient>
   );

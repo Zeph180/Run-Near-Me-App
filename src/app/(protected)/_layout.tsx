@@ -21,7 +21,6 @@ export default function ProtectedLayout() {
     console.log("is not logged in : ", authcontext.isLoggedIn);
     return <Redirect href="/auth/login" />;
   }
-  console.log("is not logged in ww: ", authcontext.isLoggedIn);
 
   return (
     <Stack>

@@ -2,6 +2,8 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import formInputProps from "@/app/types/FormInputProps";
 import { cn } from "@/utils/cn";
+import { AppText } from "@/components/AppText";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const FormInput: React.FC<formInputProps> = ({
   label,
@@ -38,9 +40,11 @@ const FormInput: React.FC<formInputProps> = ({
           secureTextEntry={secureTextEntry}
           autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
+          placeholderTextColor="#fff"
         />
-        {error && <Text style={styles.errorText}>{error}</Text>}
+        <MaterialIcons name="search" size={25} color="#fff" />
       </View>
+      {error && <AppText color="danger">{error}</AppText>}
     </View>
   );
 };
@@ -48,8 +52,6 @@ const FormInput: React.FC<formInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
-    paddingHorizontal: 16,
-    width: "95%",
   },
   label: {
     fontSize: 14,
@@ -57,12 +59,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 12,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
   },
   input: {
     height: 46,
@@ -70,11 +71,6 @@ const styles = StyleSheet.create({
   },
   errorInput: {
     borderColor: "red",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginTop: 4,
   },
 });
 
