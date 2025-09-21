@@ -5,7 +5,7 @@
     signup: "/auth/signup",
   },
   posts: {
-    getPosts: "/Post/get-posts-by-runner-id?",
+    getPostsByUserId: "/Post/get-posts-by-runner-id",
   },
   notifications: {
     getNotifications: "/notifications",

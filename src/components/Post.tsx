@@ -10,6 +10,8 @@ type PostContentProps = {
   timestamp: string;
   location?: string;
   content: string;
+  likesCount: number;
+  commentsCount: number;
 };
 
 const PostContent: React.FC<PostContentProps> = ({
@@ -19,17 +21,19 @@ const PostContent: React.FC<PostContentProps> = ({
   timestamp,
   location,
   content,
+  likesCount,
+  commentsCount,
 }) => {
   const postActions: Action[] = [
     {
       icon: "thumb-up",
-      label: "Like",
+      label: `${likesCount} Likes`,
       iconColor: "lime",
-      onPress: () => console.log("Liked"),
+      onPress: handleReaction,
     },
     {
       icon: "comment",
-      label: "Comment",
+      label: `${commentsCount} Comments`,
       onPress: () => console.log("Commented"),
     },
     {
@@ -38,6 +42,10 @@ const PostContent: React.FC<PostContentProps> = ({
       onPress: () => console.log("Shared"),
     },
   ];
+
+  async function handleReaction() {
+    console.log("Liked");
+  }
 
   return (
     <View style={styles.container}>
@@ -65,7 +73,11 @@ const PostContent: React.FC<PostContentProps> = ({
 
       {/* Post Image */}
       {postImage && (
-        <Image source={postImage} style={styles.postImage} resizeMode="cover" />
+        <Image
+          source={{ uri: postImage }}
+          style={styles.postImage}
+          resizeMode="contain"
+        />
       )}
 
       <View
@@ -78,7 +90,7 @@ const PostContent: React.FC<PostContentProps> = ({
         <View
           style={{
             flexDirection: "row",
-            minWidth: 100,
+            minWidth: 140,
             justifyContent: "space-between",
           }}
         >

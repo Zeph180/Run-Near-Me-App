@@ -6,9 +6,49 @@ import { ScrollView, View } from "react-native";
 import TabSwitcher from "@/components/TabSwitcher";
 import { AppText } from "@/components/AppText";
 import PostContent from "@/components/Post";
+import { RequestGetPosts } from "@/types/Requests/Post/PostRequests";
+import { postService } from "@/Services/api/PostService";
+import { useApiMutation } from "@/hooks/useApi";
+import { Post } from "@/types/responses/Post/PostResponses";
 
 export default function Friends() {
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<RequestGetPosts>({
+    isAdmin: true,
+    pageNumber: 10,
+    pageSize: 10,
+    runnerId: "7ca070d3-0e94-4342-cd2b-08dde344651e",
+  });
+
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const {
+    mutate: postRequest,
+    isLoading,
+    error,
+  } = useApiMutation((data) => postService.getPosts(data));
+
+  async function getPosts() {
+    let postsRequest: RequestGetPosts = {
+      isAdmin: true,
+      pageNumber: 10,
+      pageSize: 10,
+      runnerId: "7ca070d3-0e94-4342-cd2b-08dde344651e",
+    };
+
+    try {
+      const result = await postRequest(postsRequest);
+      if (!result) {
+        return;
+      }
+      if (!result?.success) {
+        return;
+      }
+      setPosts(result.data);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const tabs = [
     {
@@ -16,20 +56,21 @@ export default function Friends() {
       content: (
         <View>
           <AppText>Posts Content</AppText>
-          <PostContent
-            author="Zeph"
-            profileImage={require("../../../../assets/profile.jpg")}
-            postImage={require("../../../../assets/profile.jpg")}
-            timestamp="May 23, 2025 at 08:19 AM"
-            location="Kla"
-            content="There is nothing better than a perfect morning jog! After a long time... Hope to continue a bit longer this time.. Feeling refreshed!"
-          />
-          <PostContent
-            author="Luna"
-            profileImage={require("../../../../assets/profile.jpg")}
-            timestamp="Sep 14, 2025 at 06:45 PM"
-            content="Just finished reading an amazing book. 📖✨ #bookworm"
-          />
+          <View>
+            {posts.map((post) => (
+              <PostContent
+                key={post.postId}
+                author={post.poster}
+                profileImage={require("../../../../assets/profile.jpg")}
+                timestamp={post.createdAt}
+                content={post.caption}
+                location={post.location ?? ""}
+                likesCount={post.likesCount}
+                commentsCount={post.comments.length}
+                {...(post.imageUrl ? { postImage: post.imageUrl } : {})}
+              />
+            ))}
+          </View>
         </View>
       ),
     },
@@ -75,7 +116,7 @@ export default function Friends() {
         <TabSwitcher
           tabs={tabs}
           initialTab={0}
-          onTabChange={(index, tab) => console.log(`Active tab: ${tab.label}`)}
+          onTabChange={(index, tab) => getPosts()}
         />
       </ScrollView>
     </AppLinearGradient>
