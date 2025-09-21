@@ -1,5 +1,10 @@
-﻿import { Text } from "react-native";
+﻿import { AppLinearGradient } from "@/components/AppLinearGradient";
+import { AppText } from "@/components/AppText";
 
 export default function home() {
-  return <Text>Home screen</Text>;
+  return (
+    <AppLinearGradient>
+      <AppText> Home screen</AppText>
+    </AppLinearGradient>
+  );
 }

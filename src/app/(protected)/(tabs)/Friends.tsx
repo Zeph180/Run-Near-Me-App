@@ -2,7 +2,7 @@
 import { PageHeading } from "@/components/PageHeading";
 import FormInput from "@/components/FormInput";
 import { useContext, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import TabSwitcher from "@/components/TabSwitcher";
 import { AppText } from "@/components/AppText";
 import PostContent from "@/components/Post";
@@ -11,6 +11,8 @@ import { postService } from "@/Services/api/PostService";
 import { useApiMutation } from "@/hooks/useApi";
 import { Post } from "@/types/responses/Post/PostResponses";
 import { AuthContext } from "@/utils/authContext";
+import { MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 export default function Friends() {
   const { account } = useContext(AuthContext);
@@ -116,6 +118,25 @@ export default function Friends() {
           onTabChange={(index, tab) => getPosts()}
         />
       </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          backgroundColor: "white",
+          padding: 5,
+          bottom: 20,
+          right: 20,
+          borderRadius: 30,
+          elevation: 5,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 2,
+        }}
+      >
+        <Pressable onPress={() => router.push("/NewPost")}>
+          <MaterialIcons name="add-box" size={30} color="blue" />
+        </Pressable>
+      </View>
     </AppLinearGradient>
   );
 }

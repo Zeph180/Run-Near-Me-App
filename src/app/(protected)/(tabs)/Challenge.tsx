@@ -1,5 +1,10 @@
-﻿import { Text } from "react-native";
+﻿import { AppLinearGradient } from "@/components/AppLinearGradient";
+import { AppText } from "@/components/AppText";
 
 export default function challenge() {
-  return <Text>Challenge screen</Text>;
+  return (
+    <AppLinearGradient>
+      <AppText>Challenge screen</AppText>
+    </AppLinearGradient>
+  );
 }
