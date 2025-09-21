@@ -56,7 +56,7 @@ export default function Friends() {
             {posts.map((post) => (
               <PostContent
                 key={post.postId}
-                author={post.poster}
+                author={post.poster.nickName}
                 profileImage={require("../../../../assets/profile.jpg")}
                 timestamp={post.createdAt}
                 content={post.caption}

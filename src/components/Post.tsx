@@ -46,8 +46,8 @@ const PostContent: React.FC<PostContentProps> = ({
       setLikes((prevLikes) => prevLikes + 1);
       const response = await react(reactRequest);
       console.log("reaction response :", response);
-      if (response?.statusCode !== 200 || !response?.reacted) {
-        setLikes((prevLikes) => Math.max(prevLikes - 1));
+      if (response?.statusCode !== 200 || !response?.data.reacted) {
+        setLikes((prevLikes) => Math.max(prevLikes - 2));
       }
     } catch (error) {
       console.log(error);
