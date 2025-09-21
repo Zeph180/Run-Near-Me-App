@@ -6,6 +6,7 @@
   },
   posts: {
     getPostsByUserId: "/Post/get-posts-by-runner-id",
+    react: "/Post/react",
   },
   notifications: {
     getNotifications: "/notifications",

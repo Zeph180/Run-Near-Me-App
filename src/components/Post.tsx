@@ -1,7 +1,11 @@
-﻿import React from "react";
+﻿import React, { useContext } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import ActionButton, { Action } from "@/components/ActionButton";
 import { AppText, colorMap } from "@/components/AppText";
+import { AuthContext } from "@/utils/authContext";
+import { useApiMutation } from "@/hooks/useApi";
+import { postService } from "@/Services/api/PostService";
+import { RequestReact } from "@/types/Requests/Post/PostRequests";
 
 type PostContentProps = {
   author: string;
@@ -12,6 +16,7 @@ type PostContentProps = {
   content: string;
   likesCount: number;
   commentsCount: number;
+  postId: string;
 };
 
 const PostContent: React.FC<PostContentProps> = ({
@@ -23,13 +28,39 @@ const PostContent: React.FC<PostContentProps> = ({
   content,
   likesCount,
   commentsCount,
+  postId,
 }) => {
+  const { account } = useContext(AuthContext);
+  const { mutate: react } = useApiMutation((data) => postService.react(data));
+  const [likes, setLikes] = React.useState<number>(likesCount);
+
+  async function handleReaction(postId: string) {
+    console.log("Liked");
+    let reactRequest: RequestReact = {
+      postId: postId,
+      isLike: true,
+      runnerId: account?.runnerId ?? "",
+    };
+
+    try {
+      setLikes((prevLikes) => prevLikes + 1);
+      const response = await react(reactRequest);
+      console.log("reaction response :", response);
+      if (response?.statusCode !== 200 || !response?.reacted) {
+        setLikes((prevLikes) => Math.max(prevLikes - 1));
+      }
+    } catch (error) {
+      console.log(error);
+      setLikes((prevLikes) => Math.max(prevLikes - 1, 0));
+    }
+  }
+
   const postActions: Action[] = [
     {
       icon: "thumb-up",
-      label: `${likesCount} Likes`,
+      label: `${likes} Likes`,
       iconColor: "lime",
-      onPress: handleReaction,
+      onPress: () => handleReaction(postId),
     },
     {
       icon: "comment",
@@ -42,10 +73,6 @@ const PostContent: React.FC<PostContentProps> = ({
       onPress: () => console.log("Shared"),
     },
   ];
-
-  async function handleReaction() {
-    console.log("Liked");
-  }
 
   return (
     <View style={styles.container}>

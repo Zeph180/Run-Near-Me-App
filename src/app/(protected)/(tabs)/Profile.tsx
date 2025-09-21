@@ -10,8 +10,7 @@ import FameCardVerticalProps from "@/types/FameCardVertProps";
 import { ProgressChart } from "@/components/ProgressChart";
 
 export default function Profile() {
-  const { user, profile, account, token, isLoggedIn, logout } =
-    useContext(AuthContext);
+  const { profile, logout } = useContext(AuthContext);
   const [range, setRange] = useState("Weekly");
 
   const vertCards: FameCardVerticalProps[] = [

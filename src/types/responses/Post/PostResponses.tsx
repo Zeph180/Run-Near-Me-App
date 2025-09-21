@@ -1,4 +1,10 @@
-﻿export type Post = {
+﻿import { BaseResponse } from "@/types/responses/BaseResponse";
+
+export interface ResponseReact extends BaseResponse {
+  data: { reacted: boolean };
+}
+
+export type Post = {
   caption: string;
   comments: any[];
   createdAt: string;

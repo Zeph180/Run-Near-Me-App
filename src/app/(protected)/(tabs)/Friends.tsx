@@ -1,7 +1,7 @@
 ﻿import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { PageHeading } from "@/components/PageHeading";
 import FormInput from "@/components/FormInput";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ScrollView, View } from "react-native";
 import TabSwitcher from "@/components/TabSwitcher";
 import { AppText } from "@/components/AppText";
@@ -10,16 +10,12 @@ import { RequestGetPosts } from "@/types/Requests/Post/PostRequests";
 import { postService } from "@/Services/api/PostService";
 import { useApiMutation } from "@/hooks/useApi";
 import { Post } from "@/types/responses/Post/PostResponses";
+import { AuthContext } from "@/utils/authContext";
 
 export default function Friends() {
-  const [searchValue, setSearchValue] = useState<RequestGetPosts>({
-    isAdmin: true,
-    pageNumber: 10,
-    pageSize: 10,
-    runnerId: "7ca070d3-0e94-4342-cd2b-08dde344651e",
-  });
-
+  const { account } = useContext(AuthContext);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [searchValue, setSearchValue] = useState();
 
   const {
     mutate: postRequest,
@@ -32,7 +28,7 @@ export default function Friends() {
       isAdmin: true,
       pageNumber: 10,
       pageSize: 10,
-      runnerId: "7ca070d3-0e94-4342-cd2b-08dde344651e",
+      runnerId: account?.runnerId ?? "",
     };
 
     try {
@@ -67,6 +63,7 @@ export default function Friends() {
                 location={post.location ?? ""}
                 likesCount={post.likesCount}
                 commentsCount={post.comments.length}
+                postId={post.postId}
                 {...(post.imageUrl ? { postImage: post.imageUrl } : {})}
               />
             ))}
