@@ -1,4 +1,5 @@
 ﻿import { TextInputProps } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type FormInputProps = {
   label?: string;
@@ -11,6 +12,7 @@ type FormInputProps = {
   error?: string;
   keyboardType?: TextInputProps["keyboardType"];
   theme?: "primary" | "secondary" | "tertiary" | "lime";
-};
+  icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+} & TextInputProps;
 
 export default FormInputProps;

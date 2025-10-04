@@ -1,10 +1,24 @@
 ﻿export interface BasePostRequest {
-  postId: string;
+  postId?: string;
   runnerId: string;
 }
 
 export interface RequestReact extends BasePostRequest {
   isLike: true;
+}
+
+export type RNFile = {
+  uri?: string;
+  name?: string;
+  type?: string;
+};
+
+export interface CreatePostRequest extends BasePostRequest {
+  caption: string;
+  location: string;
+  latitude: string;
+  longitude: string;
+  postFile: RNFile | null;
 }
 
 export type RequestGetPosts = {

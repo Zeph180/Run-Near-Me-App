@@ -7,6 +7,7 @@
   posts: {
     getPostsByUserId: "/Post/get-posts-by-runner-id",
     react: "/Post/react",
+    createPost: "/Post/create-post",
   },
   notifications: {
     getNotifications: "/notifications",

@@ -17,7 +17,7 @@ import { router } from "expo-router";
 export default function Friends() {
   const { account } = useContext(AuthContext);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState("");
 
   const {
     mutate: postRequest,

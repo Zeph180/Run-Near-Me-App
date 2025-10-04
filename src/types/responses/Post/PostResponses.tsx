@@ -4,7 +4,7 @@ export interface ResponseReact extends BaseResponse {
   data: { reacted: boolean };
 }
 
-export type Post = {
+export interface Post extends BaseResponse {
   caption: string;
   comments: any[];
   createdAt: string;
@@ -14,7 +14,7 @@ export type Post = {
   postId: string;
   poster: any | null;
   videoUrl: string | null;
-};
+}
 
 export type ResponseGetPosts = {
   data: Post[];
