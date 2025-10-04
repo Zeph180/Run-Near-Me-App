@@ -42,7 +42,10 @@ class PostService extends ApiBaseService {
       formData.append("file", {
         uri: request.postFile.uri,
         name: request.postFile.name,
-        type: request.postFile.type,
+        type:
+          request.postFile.type === "image"
+            ? "image/jpeg"
+            : request.postFile.type,
       } as any);
     }
 
