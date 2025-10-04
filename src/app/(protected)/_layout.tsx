@@ -7,24 +7,23 @@ export const unstable_settings = {
 };
 
 export default function ProtectedLayout() {
-  const authcontext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
 
-  if (!authcontext.isReady) {
+  if (!authContext.isReady) {
     return null;
   }
 
-  if (authcontext.isFirstTime) {
+  if (authContext.isFirstTime) {
     console.log("is first time");
     return <Redirect href="/welcome" />;
   }
-  if (!authcontext.isLoggedIn) {
-    console.log("is not logged in : ", authcontext.isLoggedIn);
+  if (!authContext.isLoggedIn) {
+    console.log("is not logged in : ", authContext.isLoggedIn);
     return <Redirect href="/auth/login" />;
   }
-  console.log("is not logged in ww: ", authcontext.isLoggedIn);
 
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   );

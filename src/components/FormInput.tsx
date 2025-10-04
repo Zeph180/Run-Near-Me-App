@@ -1,7 +1,9 @@
 ﻿import React from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import formInputProps from "@/app/types/FormInputProps";
 import { cn } from "@/utils/cn";
+import { AppText } from "@/components/AppText";
+import { MaterialIcons } from "@expo/vector-icons";
+import formInputProps from "@/types/FormInputProps";
 
 const FormInput: React.FC<formInputProps> = ({
   label,
@@ -13,6 +15,9 @@ const FormInput: React.FC<formInputProps> = ({
   keyboardType,
   error,
   theme = "primary",
+  numberOfLines = 1,
+  multiline,
+  icon,
   ...rest
 }) => {
   return (
@@ -31,16 +36,26 @@ const FormInput: React.FC<formInputProps> = ({
       )}
       <View style={styles.inputContainer}>
         <TextInput
-          style={[styles.input, error && styles.errorInput]}
+          style={[
+            styles.input,
+            error && styles.errorInput,
+            multiline && { minHeight: numberOfLines * 24 },
+            rest?.style,
+          ]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={secureTextEntry && !multiline}
           autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
+          placeholderTextColor="#fff"
+          multiline={multiline}
+          numberOfLines={numberOfLines}
+          {...rest}
         />
-        {error && <Text style={styles.errorText}>{error}</Text>}
+        {icon && <MaterialIcons name="search" size={25} color="#fff" />}
       </View>
+      {error && <AppText color="danger">{error}</AppText>}
     </View>
   );
 };
@@ -48,8 +63,6 @@ const FormInput: React.FC<formInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
-    paddingHorizontal: 16,
-    width: "95%",
   },
   label: {
     fontSize: 14,
@@ -57,24 +70,19 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
     paddingHorizontal: 12,
-    backgroundColor: "#fff",
+    backgroundColor: "transparent",
   },
   input: {
-    height: 46,
-    flex: 1,
+    fontSize: 16,
+    paddingVertical: 10,
+    textAlignVertical: "top",
   },
   errorInput: {
     borderColor: "red",
-  },
-  errorText: {
-    color: "red",
-    fontSize: 12,
-    marginTop: 4,
   },
 });
 

@@ -5,6 +5,7 @@
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { AppText } from "@/components/AppText";
 import { Link } from "expo-router";
@@ -98,28 +99,30 @@ export default function Login() {
               Login to continue
             </AppText>
 
-            <FormInput
-              label="Email"
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Enter your email"
-              secureTextEntry={false}
-              autoCapitalize="none"
-              error={errors.email}
-              keyboardType="email-address"
-              editable={!isLoading}
-            />
-            <FormInput
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              keyboardType="default"
-              secureTextEntry={true}
-              autoCapitalize="none"
-              error={errors.password}
-              placeholder="Password"
-              editable={!isLoading}
-            />
+            <View style={styles.formContainer}>
+              <FormInput
+                label="Email"
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Enter your email"
+                secureTextEntry={false}
+                autoCapitalize="none"
+                error={errors.email}
+                keyboardType="email-address"
+                editable={!isLoading}
+              />
+              <FormInput
+                label="Password"
+                value={password}
+                onChangeText={setPassword}
+                keyboardType="default"
+                secureTextEntry={true}
+                autoCapitalize="none"
+                error={errors.password}
+                placeholder="Password"
+                editable={!isLoading}
+              />
+            </View>
 
             <Button
               title={isLoading ? "Signing in..." : "Login"}
@@ -163,11 +166,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     minHeight: "100%",
   },
+  formContainer: {
+    width: "100%",
+    marginTop: 20,
+  },
   orText: {
     color: "#ffffff",
     fontSize: 16,
-    fontWeight: "500",
-    marginVertical: 15,
   },
   signupText: {
     fontWeight: "bold",

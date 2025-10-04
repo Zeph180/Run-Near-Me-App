@@ -5,18 +5,26 @@ type AppTextProps = {
   children: React.ReactNode;
   size?: "small" | "medium" | "large" | "heading" | "xl" | "xxl";
   bold?: boolean;
-  color?: "primary" | "secondary" | "tertiary" | "white" | "lime" | "offWhite";
+  color?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "white"
+    | "lime"
+    | "offWhite"
+    | "danger";
   center?: boolean;
   className?: string;
 };
 
-const colorMap: Record<NonNullable<AppTextProps["color"]>, string> = {
+export const colorMap: Record<NonNullable<AppTextProps["color"]>, string> = {
   primary: "#000000",
   secondary: "#6b7280",
   tertiary: "#9ca3af",
   white: "#ffffff",
   lime: "#a4ff53",
   offWhite: "#d9d9d9",
+  danger: "#ff0000",
 };
 
 export function AppText({

@@ -6,7 +6,7 @@ import { navigate } from "expo-router/build/global-state/routing";
 export default function activity() {
   return (
     <AppLinearGradient>
-      <Text>Activity screen</Text>);
+      <Text>Activity screen</Text>
       <Button
         title="Got to profile"
         onPress={() => {
