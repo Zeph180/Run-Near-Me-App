@@ -53,7 +53,6 @@ export default function Friends() {
       label: "Posts",
       content: (
         <View>
-          <AppText>Posts Content</AppText>
           <View>
             {posts.map((post) => (
               <PostContent
