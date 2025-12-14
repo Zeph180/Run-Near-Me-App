@@ -1,4 +1,5 @@
 ﻿import { StyleSheet } from "react-native";
+import colors from "@/Constants/Colors";
 
 export const authScreenStyles = StyleSheet.create({
   container: {
@@ -17,9 +18,20 @@ export const authScreenStyles = StyleSheet.create({
     width: "100%",
     marginTop: 20,
     padding: 10,
-    // backgroundColor: "#fff",
-    // backgroundColor: "rgba(190, 255, 0, 0.25)",
     borderRadius: 13,
+  },
+  logoContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 73,
+    height: 73,
+    marginBottom: 10,
+    backgroundColor: colors.offWhite,
+    borderRadius: 13,
+  },
+  logoImage: {
+    width: "96%",
+    height: "80%",
   },
   orText: {
     color: "#ffffff",

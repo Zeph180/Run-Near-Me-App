@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 export function FrostedGlassCard({ children }: any) {
   return (
-    <BlurView intensity={90} tint="dark" style={styles.card}>
+    <BlurView intensity={80} tint="dark" style={styles.card}>
       {children}
     </BlurView>
   );

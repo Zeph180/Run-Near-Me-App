@@ -17,6 +17,7 @@ import { useApiMutation } from "@/hooks/useApi";
 import { authService } from "@/Services/api/Auth";
 import { validateEmail } from "@/utils/emailValidation";
 import { navigate } from "expo-router/build/global-state/routing";
+import { Image } from "expo-image";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -92,8 +93,16 @@ export default function SignUp() {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
+            <View style={authScreenStyles.logoContainer}>
+              <Image
+                style={authScreenStyles.logoImage}
+                source={require("../../../assets/logo.svg")}
+                contentFit="contain"
+              />
+            </View>
+
             <AppText center size={"xl"}>
-              Sign up
+              Sign up to get started
             </AppText>
 
             <FrostedGlassCard>

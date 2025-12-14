@@ -14,7 +14,9 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack
+        screenOptions={{ headerShown: false, animation: "slide_from_right" }}
+      >
         <Stack.Screen
           name="(protected)"
           options={{ headerShown: false, animation: "none" }}

@@ -4,12 +4,13 @@
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { AppText } from "@/components/AppText";
 import { Link } from "expo-router";
 import FormInput from "@/components/FormInput";
 import { Button } from "@/components/Button";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppLinearGradient } from "@/components/AppLinearGradient";
 import { AuthContext } from "@/utils/authContext";
 import { authService, LoginRequest } from "@/Services/api/Auth";
@@ -17,6 +18,7 @@ import { useApiMutation } from "@/hooks/useApi";
 import { validateEmail } from "@/utils/emailValidation";
 import { authScreenStyles } from "@/styles/authScreenStyles";
 import { FrostedGlassCard } from "@/components/FrostedGlassCard";
+import { Image } from "expo-image";
 
 const handleLoginWithGoogle = () => {
   console.log("Login with Google!");
@@ -96,10 +98,28 @@ export default function Login() {
             contentContainerStyle={authScreenStyles.scrollViewContent}
             showsVerticalScrollIndicator={false}
           >
+            {/*<ImageBackground*/}
+            {/*  source={require("../../../assets/strech.png")}*/}
+            {/*  style={{*/}
+            {/*    width: "100%",*/}
+            {/*    alignItems: "center",*/}
+            {/*  }}*/}
+            {/*  imageStyle={{*/}
+            {/*    right: -1000,*/}
+            {/*    position: "absolute",*/}
+            {/*  }}*/}
+            {/*>*/}
+            <View style={authScreenStyles.logoContainer}>
+              <Image
+                style={authScreenStyles.logoImage}
+                source={require("../../../assets/logo.svg")}
+                contentFit="contain"
+              />
+            </View>
+
             <AppText center size={"xl"}>
               Login to continue
             </AppText>
-
             <FrostedGlassCard style={authScreenStyles.formContainer}>
               <FormInput
                 label="Email"
@@ -146,6 +166,7 @@ export default function Login() {
                 </Link>
               </AppText>
             </FrostedGlassCard>
+            {/*</ImageBackground>*/}
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
