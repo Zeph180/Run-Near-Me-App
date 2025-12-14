@@ -1,8 +1,14 @@
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import "../../global.css";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "@/utils/authContext";
+
+SplashScreen.setOptions({
+  duration: 5000,
+  fade: true,
+});
 
 export default function RootLayout() {
   return (

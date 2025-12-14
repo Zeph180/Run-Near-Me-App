@@ -5,7 +5,7 @@ import { navigate } from "expo-router/build/global-state/routing";
 
 export default function Welcome() {
   const getStartedPress = () => {
-    navigate("/auth/login");
+    navigate("/login");
   };
 
   return (

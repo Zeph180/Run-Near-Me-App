@@ -20,7 +20,7 @@ export class AuthService extends ApiBaseService {
   }
 
   async signup(credential: SignupRequest): Promise<SignupResponse> {
-    return this.makeRequest<SignupResponse>("/auth/login", {
+    return this.makeRequest<SignupResponse>("/auth/register", {
       method: "POST",
       data: JSON.stringify(credential),
     });

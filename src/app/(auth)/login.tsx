@@ -3,9 +3,7 @@
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StyleSheet,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import { AppText } from "@/components/AppText";
 import { Link } from "expo-router";
@@ -17,6 +15,8 @@ import { AuthContext } from "@/utils/authContext";
 import { authService, LoginRequest } from "@/Services/api/Auth";
 import { useApiMutation } from "@/hooks/useApi";
 import { validateEmail } from "@/utils/emailValidation";
+import { authScreenStyles } from "@/styles/authScreenStyles";
+import { FrostedGlassCard } from "@/components/FrostedGlassCard";
 
 const handleLoginWithGoogle = () => {
   console.log("Login with Google!");
@@ -62,18 +62,19 @@ export default function Login() {
 
     try {
       const result = await loginUser(credentials);
-
+      console.log("Login result: ", result);
       if (!result) {
         console.log("Login result is null");
         return;
       }
 
-      if (result.error) {
-        console.log("Login error: ", result.error);
+      if (result.errors.length > 0) {
+        console.log("Login error: ", result.errors);
         return;
       }
 
-      if (result.statusCode !== 200 || !result.data) {
+      if (!result.data) {
+        console.log("Resp data :", result.data);
         console.log("Login failed or returned invalid data");
         return;
       }
@@ -88,18 +89,18 @@ export default function Login() {
     <AppLinearGradient>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyBoardView}
+        style={authScreenStyles.keyBoardView}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
+            contentContainerStyle={authScreenStyles.scrollViewContent}
             showsVerticalScrollIndicator={false}
           >
             <AppText center size={"xl"}>
               Login to continue
             </AppText>
 
-            <View style={styles.formContainer}>
+            <FrostedGlassCard style={authScreenStyles.formContainer}>
               <FormInput
                 label="Email"
                 value={email}
@@ -122,70 +123,32 @@ export default function Login() {
                 placeholder="Password"
                 editable={!isLoading}
               />
-            </View>
 
-            <Button
-              title={isLoading ? "Signing in..." : "Login"}
-              onPress={() => handleLogin()}
-              theme="lime"
-              style={styles.button}
-            />
+              <Button
+                title={isLoading ? "Signing in..." : "Login"}
+                onPress={() => handleLogin()}
+                theme="lime"
+                style={authScreenStyles.button}
+              />
 
-            <AppText center>OR</AppText>
+              <AppText center>OR</AppText>
 
-            <Button
-              title="Continue with Google"
-              onPress={() => handleLoginWithGoogle()}
-              style={styles.button}
-            />
+              <Button
+                title="Continue with Google"
+                onPress={() => handleLoginWithGoogle()}
+                style={authScreenStyles.button}
+              />
 
-            <AppText center>
-              Don{"'"} have an account?{" "}
-              <Link href="/auth/sign-up>" style={styles.signUpLink}>
-                <AppText color={"lime"}>SIGNUP</AppText>
-              </Link>
-            </AppText>
+              <AppText center>
+                Don{"'"}t have an account?{" "}
+                <Link href="/sign-up" style={authScreenStyles.signUpLink}>
+                  <AppText color={"lime"}>Signup</AppText>
+                </Link>
+              </AppText>
+            </FrostedGlassCard>
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </AppLinearGradient>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  keyBoardView: {
-    flex: 1,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-    padding: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "100%",
-  },
-  formContainer: {
-    width: "100%",
-    marginTop: 20,
-  },
-  orText: {
-    color: "#ffffff",
-    fontSize: 16,
-  },
-  signupText: {
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  button: {
-    width: "84%",
-    marginTop: 20,
-    borderRadius: 13,
-  },
-  signUpLink: {
-    color: "#9ACD32",
-    fontWeight: "bold",
-    textDecorationLine: "underline",
-  },
-});

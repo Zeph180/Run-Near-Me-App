@@ -2,6 +2,8 @@
   success: boolean;
   message: string;
   data: any;
-  error: any;
+  errors: any;
+  errorCode: string;
   statusCode: number;
+  timestamp: string;
 }
