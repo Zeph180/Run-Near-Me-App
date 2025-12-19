@@ -6,10 +6,11 @@ import { AuthContext } from "@/utils/authContext";
 import { useApiMutation } from "@/hooks/useApi";
 import { postService } from "@/Services/api/PostService";
 import { RequestReact } from "@/types/Requests/Post/PostRequests";
+import { navigate } from "expo-router/build/global-state/routing";
 
 type PostContentProps = {
   author: string;
-  profileImage: any;
+  profileImage?: any;
   postImage?: any;
   timestamp: string;
   location?: string;
@@ -65,7 +66,9 @@ const PostContent: React.FC<PostContentProps> = ({
     {
       icon: "comment",
       label: `${commentsCount} Comments`,
-      onPress: () => console.log("Commented"),
+      onPress: () => {
+        navigate("/Comment");
+      },
     },
     {
       icon: "share-variant",

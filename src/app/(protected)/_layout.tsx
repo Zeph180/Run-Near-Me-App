@@ -19,12 +19,16 @@ export default function ProtectedLayout() {
   }
   if (!authContext.isLoggedIn) {
     console.log("is not logged in : ", authContext.isLoggedIn);
-    return <Redirect href="/auth/login" />;
+    return <Redirect href="/login" />;
   }
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Comment"
+        options={{ headerShown: false, presentation: "containedModal" }}
+      />
     </Stack>
   );
 }

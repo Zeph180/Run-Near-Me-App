@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import { AppText } from "@/components/AppText";
 import { MaterialIcons } from "@expo/vector-icons";
 import formInputProps from "@/types/FormInputProps";
+import Colors from "@/Constants/Colors";
 
 const FormInput: React.FC<formInputProps> = ({
   label,
@@ -18,6 +19,7 @@ const FormInput: React.FC<formInputProps> = ({
   numberOfLines = 1,
   multiline,
   icon,
+  customStyle = { borderColor: Colors.tertiary },
   ...rest
 }) => {
   return (
@@ -34,7 +36,7 @@ const FormInput: React.FC<formInputProps> = ({
           {label}
         </Text>
       )}
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, customStyle]}>
         <TextInput
           style={[
             styles.input,
@@ -48,7 +50,7 @@ const FormInput: React.FC<formInputProps> = ({
           secureTextEntry={secureTextEntry && !multiline}
           autoCapitalize={autoCapitalize}
           keyboardType={keyboardType}
-          placeholderTextColor="#fff"
+          placeholderTextColor="#818281"
           multiline={multiline}
           numberOfLines={numberOfLines}
           {...rest}

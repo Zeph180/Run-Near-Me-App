@@ -3,7 +3,7 @@ import { SplashScreen, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginResponse } from "@/types/responses/authResponses";
 import { Profile } from "@/types/responses/Profile";
-import { Account } from "@/types/responses/Account";
+import { User } from "@/types/responses/Account";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -13,7 +13,7 @@ type AuthState = {
   isReady: boolean;
   user?: LoginResponse | null;
   profile?: Profile | null;
-  account?: Account | null;
+  account?: User | null;
   token?: string;
   login: (user: LoginResponse) => void;
   logout: () => void;
@@ -52,13 +52,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
       console.log("storing auth state: ", loginResponse);
 
       const tokenValue = JSON.stringify(loginResponse.data.token);
-      const profileData = loginResponse?.data?.profile;
-      const accountData = loginResponse?.data?.account;
+      // const profileData = loginResponse?.data?.profile;
+      const accountData = loginResponse?.data?.user;
 
       await Promise.all([
         AsyncStorage.setItem(authStorageKey, tokenValue),
         AsyncStorage.setItem(userStorageKey, JSON.stringify(loginResponse)),
-        AsyncStorage.setItem(profileStorageKey, JSON.stringify(profileData)),
+        // AsyncStorage.setItem(profileStorageKey, JSON.stringify(profileData)),
         AsyncStorage.setItem(accountStorageKey, JSON.stringify(accountData)),
         AsyncStorage.setItem(firstTimeStorageKey, "false"),
       ]);
@@ -71,9 +71,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     try {
       console.log("login response: ", userResponse);
       setIsLoggedIn(true);
-      setUser(userResponse.data.profile);
-      setProfile(userResponse.data.profile);
-      setAccount(userResponse.data.account);
+      setUser(userResponse.data.user);
+      // setProfile(userResponse.data.profile);
+      setAccount(userResponse.data.user);
       setToken(userResponse.data.token);
       setIsFirstTime(false);
 

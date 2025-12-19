@@ -1,12 +1,10 @@
 ﻿import { BaseResponse } from "@/types/responses/BaseResponse";
-import { Account } from "@/types/responses/Account";
-import { Profile } from "@/types/responses/Profile";
+import { User } from "@/types/responses/Account";
 
 export interface LoginResponse extends BaseResponse {
   data: {
     token: string;
-    account: Account;
-    profile: Profile;
+    user: User;
   };
 }
 
