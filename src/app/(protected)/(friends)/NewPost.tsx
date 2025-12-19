@@ -1,4 +1,4 @@
-﻿import { AppLinearGradient } from "@/components/AppLinearGradient";
+import { AppLinearGradient } from "@/components/AppLinearGradient";
 import {
   Alert,
   Image,

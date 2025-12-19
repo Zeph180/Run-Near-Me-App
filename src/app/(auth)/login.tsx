@@ -70,7 +70,7 @@ export default function Login() {
         return;
       }
 
-      if (result.errors.length > 0) {
+      if (result.errors) {
         console.log("Login error: ", result.errors);
         return;
       }
