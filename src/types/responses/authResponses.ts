@@ -1,5 +1,5 @@
 ﻿import { BaseResponse } from "@/types/responses/BaseResponse";
-import { User } from "@/types/responses/Account";
+import { User } from "@/types/responses/User";
 
 export interface LoginResponse extends BaseResponse {
   data: {
