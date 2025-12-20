@@ -1,9 +1,9 @@
-import {createContext, PropsWithChildren, useEffect, useState} from "react";
-import {SplashScreen, useRouter} from "expo-router";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import { SplashScreen, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {LoginResponse} from "@/types/responses/authResponses";
-import {AuthState} from "@/types/State/AuthState";
-import {User} from "@/types/responses/User";
+import { LoginResponse } from "@/types/responses/authResponses";
+import { AuthState } from "@/types/State/AuthState";
+import { User } from "@/types/responses/User";
 
 SplashScreen.preventAutoHideAsync();
 

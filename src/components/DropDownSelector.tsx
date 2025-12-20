@@ -1,9 +1,17 @@
-﻿import React, {useState} from "react";
+﻿import React, { useState } from "react";
 import Colors from "@/Constants/Colors";
-import {FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
-import {cn} from "@/utils/cn";
-import {MaterialIcons} from "@expo/vector-icons";
-import {AppText} from "@/components/AppText";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { cn } from "@/utils/cn";
+import { MaterialIcons } from "@expo/vector-icons";
+import { AppText } from "@/components/AppText";
 
 export interface DropdownOption {
   label: string;

@@ -8,6 +8,15 @@ import { validateHeight } from "@/utils/validateHeight";
 import { AuthContext } from "@/utils/authContext";
 import { Button } from "@/components/Button";
 import { authScreenStyles } from "@/styles/authScreenStyles";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { useApiMutation } from "@/hooks/useApi";
+import { profileService } from "@/Services/api/ProfileService";
 
 export default function CompleteProfile() {
   const [username, setUsername] = useState<string>("");
@@ -26,10 +35,18 @@ export default function CompleteProfile() {
   });
   const { user } = useContext(AuthContext);
 
+  const {
+    mutate: completeProfile,
+    isLoading,
+    error,
+  } = useApiMutation((data) => profileService.completeProfile(data));
+
   const genderOptions = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
   ];
+
+  const formatDateOnly = (date: Date) => date.toISOString().split("T")[0];
 
   async function handleCreateProfile() {
     let valid = true;
@@ -53,14 +70,17 @@ export default function CompleteProfile() {
 
     try {
       const data = {
+        userId: user?.userId,
         height,
         weight,
         gender,
-        userId: user?.userId,
-        dob: dateOfBirth,
+        dob: formatDateOnly(dateOfBirth),
       };
 
       console.log("SSSS", data);
+
+      const result = await completeProfile(data);
+      console.log("eeee", result);
     } catch (error) {
       console.log(error);
     }
@@ -68,57 +88,64 @@ export default function CompleteProfile() {
 
   return (
     <AppLinearGradient>
-      <PageHeading
-        heading={"Complete Profile"}
-        hasNotification={false}
-        description="Hello there! Tell us about yourself"
-      />
-
-      <DropDownSelector
-        label="Gender"
-        value={gender}
-        onChange={setGender}
-        options={genderOptions}
-        placeholder="Select your gender"
-        error={errors.gender}
-      />
-
-      <FormInput
-        label="Height"
-        placeholder={"Enter your height in cm"}
-        value={height}
-        keyboardType="numeric"
-        editable={true}
-        onChangeText={setHeight}
-        error={errors.height}
-      />
-
-      <FormInput
-        label="Weight"
-        placeholder={"Enter your weight in kg"}
-        value={weight}
-        keyboardType="numeric"
-        editable={true}
-        onChangeText={setWeight}
-        error={errors.weight}
-      />
-
-      <DatePickerField
-        value={dateOfBirth}
-        onChange={setDateOfBirth}
-        label="Date of birthhhh"
-        maximumDate={new Date(Date.now() - 6 * 365 * 24 * 60 * 60 * 1000)}
-        placeholder="Select your date of birth"
-        mode="date"
-        displayFormat="numeric"
-      />
-
-      <Button
-        title="Submit"
-        onPress={() => handleCreateProfile()}
-        theme="lime"
-        style={authScreenStyles.button}
-      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={authScreenStyles.keyBoardView}
+      >
+        <PageHeading
+          heading={"Complete Profile"}
+          hasNotification={false}
+          description="Hello there! Tell us about yourself"
+        />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={authScreenStyles.formContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <DropDownSelector
+              label="Gender"
+              value={gender}
+              onChange={setGender}
+              options={genderOptions}
+              placeholder="Select your gender"
+              error={errors.gender}
+            />
+            <FormInput
+              label="Height"
+              placeholder={"Enter your height in cm"}
+              value={height}
+              keyboardType="numeric"
+              editable={true}
+              onChangeText={setHeight}
+              error={errors.height}
+            />
+            <FormInput
+              label="Weight"
+              placeholder={"Enter your weight in kg"}
+              value={weight}
+              keyboardType="numeric"
+              editable={true}
+              onChangeText={setWeight}
+              error={errors.weight}
+            />
+            <DatePickerField
+              value={dateOfBirth}
+              onChange={setDateOfBirth}
+              label="Date of birth"
+              maximumDate={new Date(Date.now() - 6 * 365 * 24 * 60 * 60 * 1000)}
+              placeholder="Select your date of birth"
+              mode="date"
+              displayFormat="numeric"
+            />
+            <Button
+              title="Submit"
+              onPress={() => handleCreateProfile()}
+              theme="lime"
+              style={authScreenStyles.button}
+            />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </AppLinearGradient>
   );
 }
