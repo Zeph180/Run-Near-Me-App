@@ -4,6 +4,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginResponse } from "@/types/responses/authResponses";
 import { AuthState } from "@/types/State/AuthState";
 import { User } from "@/types/responses/User";
+import { profileService } from "@/Services/api/ProfileService";
+import { Profile } from "@/types/Profile/Profile";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,8 +31,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<User>();
+  const [profile, setProfile] = useState<Profile>();
   const [account, setAccount] = useState<any>(null);
   const [token, setToken] = useState<string>("");
   const router = useRouter();
@@ -68,6 +70,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       await storeAuthState(userResponse);
 
+      console.log("Userdata:", userdata);
+      console.log("User:", user);
+
+      const profileResponse = await profileService.getProfile(userdata.userId);
+      setProfile(profileResponse.data);
+      console.log("Profile:", profileResponse);
+
       //Implement email verification here
       // if (!userdata?.emailVerified) router.replace("/auth/verify");
       if (!userdata?.emailVerified) {
@@ -80,6 +89,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         return;
       } else {
         router.replace("/");
+        console.log("navigated to complete profile");
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -92,8 +102,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       setIsLoggedIn(false);
       setIsFirstTime(false);
-      setUser(null);
-      setProfile(null);
+      setUser(undefined);
+      setProfile(undefined);
       setAccount(null);
       setToken("");
 

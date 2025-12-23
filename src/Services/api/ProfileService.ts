@@ -9,6 +9,14 @@ export class ProfileService extends ApiBaseService {
       data: JSON.stringify(data),
     });
   }
+
+  async getProfile(profileId: string): Promise<CompleteProfileResponse> {
+    console.log("profile.complete called with :", profileId);
+    return this.makeRequest(`/Profile/${profileId}`, {
+      method: "GET",
+      data: JSON.stringify({}),
+    });
+  }
 }
 
 export const profileService = new ProfileService();
