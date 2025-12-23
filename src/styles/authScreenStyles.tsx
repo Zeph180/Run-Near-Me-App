@@ -9,7 +9,7 @@ export const authScreenStyles = StyleSheet.create({
     flex: 1,
   },
   scrollViewContent: {
-    flexGrow: 1,
+    // flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100%",
@@ -45,6 +45,7 @@ export const authScreenStyles = StyleSheet.create({
     width: "96%",
     marginTop: 10,
     borderRadius: 13,
+    marginHorizontal: "auto",
   },
   signUpLink: {
     color: "#9ACD32",

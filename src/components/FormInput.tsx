@@ -17,7 +17,7 @@ const FormInput: React.FC<formInputProps> = ({
   error,
   theme = "primary",
   numberOfLines = 1,
-  multiline,
+  multiline = false,
   icon,
   customStyle = { borderColor: Colors.tertiary },
   ...rest

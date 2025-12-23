@@ -13,7 +13,6 @@ export function useApiMutation<T, P = any>(
       try {
         setIsLoading(true);
         setError(null);
-
         return await mutationFunction(params);
       } catch (err) {
         const errorMessage =

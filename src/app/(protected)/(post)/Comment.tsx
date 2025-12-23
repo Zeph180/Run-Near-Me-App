@@ -1,5 +1,4 @@
-﻿import { AppText } from "@/components/AppText";
-import { AppLinearGradient } from "@/components/AppLinearGradient";
+﻿import { AppLinearGradient } from "@/components/AppLinearGradient";
 import PostContent from "@/components/Post";
 import { KeyboardAvoidingView } from "react-native";
 import FormInput from "@/components/FormInput";

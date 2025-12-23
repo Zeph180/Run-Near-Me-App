@@ -2,22 +2,10 @@ import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { SplashScreen, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginResponse } from "@/types/responses/authResponses";
-import { Profile } from "@/types/responses/Profile";
-import { User } from "@/types/responses/Account";
+import { AuthState } from "@/types/State/AuthState";
+import { User } from "@/types/responses/User";
 
 SplashScreen.preventAutoHideAsync();
-
-type AuthState = {
-  isLoggedIn: boolean;
-  isFirstTime: boolean;
-  isReady: boolean;
-  user?: LoginResponse | null;
-  profile?: Profile | null;
-  account?: User | null;
-  token?: string;
-  login: (user: LoginResponse) => void;
-  logout: () => void;
-};
 
 const authStorageKey = "auth-key";
 const firstTimeStorageKey = "first-time";
@@ -41,7 +29,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [account, setAccount] = useState<any>(null);
   const [token, setToken] = useState<string>("");
@@ -68,18 +56,31 @@ export function AuthProvider({ children }: PropsWithChildren) {
   };
 
   const login = async (userResponse: LoginResponse) => {
+    const userdata = userResponse?.data?.user;
     try {
       console.log("login response: ", userResponse);
       setIsLoggedIn(true);
-      setUser(userResponse.data.user);
+      setUser(userdata);
       // setProfile(userResponse.data.profile);
-      setAccount(userResponse.data.user);
+      setAccount(userdata);
       setToken(userResponse.data.token);
       setIsFirstTime(false);
 
       await storeAuthState(userResponse);
 
-      router.replace("/");
+      //Implement email verification here
+      // if (!userdata?.emailVerified) router.replace("/auth/verify");
+      if (!userdata?.emailVerified) {
+        console.log("email not verified");
+      }
+      if (!userdata?.profileCompleted) {
+        console.log("profile not completed");
+        router.push("/CompleteProfile");
+        console.log("navigated to complete profile");
+        return;
+      } else {
+        router.replace("/");
+      }
     } catch (error) {
       console.error("Error logging in:", error);
     }
