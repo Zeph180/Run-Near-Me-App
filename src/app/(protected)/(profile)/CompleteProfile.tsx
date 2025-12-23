@@ -17,6 +17,9 @@ import {
 } from "react-native";
 import { useApiMutation } from "@/hooks/useApi";
 import { profileService } from "@/Services/api/ProfileService";
+import { useRouter } from "expo-router";
+
+const router = useRouter();
 
 export default function CompleteProfile() {
   const [username, setUsername] = useState<string>("");
@@ -36,7 +39,7 @@ export default function CompleteProfile() {
   const { user } = useContext(AuthContext);
 
   const {
-    mutate: completeProfile,
+    mutate: submitProfile,
     isLoading,
     error,
   } = useApiMutation((data) => profileService.completeProfile(data));
@@ -79,7 +82,14 @@ export default function CompleteProfile() {
 
       console.log("SSSS", data);
 
-      const result = await completeProfile(data);
+      const result = await submitProfile(data);
+
+      if (result?.success) {
+        router.replace("/");
+      } else {
+        // HAndle error response here
+      }
+
       console.log("eeee", result);
     } catch (error) {
       console.log(error);
@@ -142,6 +152,7 @@ export default function CompleteProfile() {
               onPress={() => handleCreateProfile()}
               theme="lime"
               style={authScreenStyles.button}
+              disabled={isLoading}
             />
           </ScrollView>
         </TouchableWithoutFeedback>
