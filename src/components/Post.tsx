@@ -36,11 +36,10 @@ const PostContent: React.FC<PostContentProps> = ({
   const [likes, setLikes] = React.useState<number>(likesCount);
 
   async function handleReaction(postId: string) {
-    console.log("Liked");
     let reactRequest: RequestReact = {
       postId: postId,
       isLike: true,
-      runnerId: account?.runnerId ?? "",
+      runnerId: account?.userId ?? "",
     };
 
     try {
