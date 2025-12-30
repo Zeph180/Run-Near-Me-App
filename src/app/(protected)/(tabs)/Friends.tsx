@@ -30,7 +30,7 @@ export default function Friends() {
       isAdmin: true,
       pageNumber: 10,
       pageSize: 10,
-      runnerId: account?.runnerId ?? "",
+      runnerId: account?.userId ?? "",
     };
 
     try {

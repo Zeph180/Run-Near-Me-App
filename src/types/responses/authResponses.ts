@@ -1,17 +1,1 @@
-﻿import { BaseResponse } from "@/types/responses/BaseResponse";
-import { User } from "@/types/responses/User";
-
-export interface LoginResponse extends BaseResponse {
-  data: {
-    token: string;
-    user: User;
-  };
-}
-
-export interface SignupResponse extends BaseResponse {
-  data: {
-    runnerId: string;
-    email: string;
-    name: string;
-  };
-}
+﻿import { BaseResponse } from "@/types/responses/BaseResponse";import { User } from "@/types/responses/User";export interface LoginResponse extends BaseResponse {  data: {    token: string;    user: User;  };}export interface SignupResponse extends BaseResponse {  data: {    runnerId: string;    email: string;    name: string;  };}

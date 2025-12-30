@@ -12,14 +12,11 @@ export class ApiBaseService {
   constructor(baseUrl: string = API_URL) {
     this.api = axios.create({
       baseURL: baseUrl,
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
 
     this.api.interceptors.request.use(
       async (config) => {
-        const token = AsyncStorage.getItem("auth-key");
+        const token = await AsyncStorage.getItem("auth-key");
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }

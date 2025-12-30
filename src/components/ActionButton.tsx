@@ -21,7 +21,6 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   iconSize = 25,
   spacing = 10,
 }: ActionButtonProps) => {
-  // @ts-ignore
   return (
     <Pressable
       onPress={action.onPress}

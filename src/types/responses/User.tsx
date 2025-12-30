@@ -1,7 +1,1 @@
-﻿export type User = {
-  userId: string;
-  email: string;
-  name: string;
-  profileCompleted: boolean;
-  emailVerified: boolean;
-};
+﻿export type User = {  userId: string;  email: string;  name: string;  profileCompleted: boolean;  emailVerified: boolean;};

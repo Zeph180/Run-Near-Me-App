@@ -19,8 +19,6 @@ import { useApiMutation } from "@/hooks/useApi";
 import { profileService } from "@/Services/api/ProfileService";
 import { useRouter } from "expo-router";
 
-const router = useRouter();
-
 export default function CompleteProfile() {
   const [username, setUsername] = useState<string>("");
   const [height, setHeight] = useState<string>("");
@@ -37,6 +35,7 @@ export default function CompleteProfile() {
     gender: "",
   });
   const { user } = useContext(AuthContext);
+  const router = useRouter();
 
   const {
     mutate: submitProfile,
