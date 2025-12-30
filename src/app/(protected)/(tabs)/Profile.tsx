@@ -19,6 +19,9 @@ import { ProgressChart } from "@/components/ProgressChart";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "@/Constants/Colors";
 import * as ImagePicker from "expo-image-picker";
+import { RNFile } from "@/types/Requests/Post/PostRequests";
+import { UpdateProfilePicRequest } from "@/types/Requests/Profile/ProfileRequests";
+import { profileService } from "@/Services/api/ProfileService";
 
 export default function Profile() {
   const { user, profile, logout } = useContext(AuthContext);
@@ -75,6 +78,26 @@ export default function Profile() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      const image = result.assets[0];
+
+      const picToUpload: RNFile = {
+        uri: image.uri,
+        name: image.fileName ?? "profile.jpg",
+        type: image.mimeType ?? "image/jpeg",
+      };
+
+      console.log("uiweyweewui : ", profile?.userId);
+
+      let profilePicUploadRequest: UpdateProfilePicRequest = {
+        UserId: profile?.userId,
+        ProfilePicture: picToUpload,
+      };
+
+      let res = await profileService.updateProfilePicture(
+        profilePicUploadRequest,
+      );
+
+      console.log("upload resp: ", res);
     }
   };
 
@@ -91,9 +114,10 @@ export default function Profile() {
           <View style={styles.container}>
             <View style={styles.avatarBorder}>
               <View style={styles.avatarWrapper}>
-                {image && (
-                  <Image source={{ uri: image }} style={styles.avatar} />
-                )}
+                <Image
+                  source={{ uri: profile.profileImage }}
+                  style={styles.avatar}
+                />
                 <View style={styles.cameraContainer}>
                   <Pressable
                     style={styles.innerCameraContainer}

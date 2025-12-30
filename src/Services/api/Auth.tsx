@@ -15,6 +15,9 @@ export class AuthService extends ApiBaseService {
     console.log("Auth.login called with :", JSON.stringify(credentials));
     return this.makeRequest<LoginResponse>("/auth/login", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       data: JSON.stringify(credentials),
     });
   }
