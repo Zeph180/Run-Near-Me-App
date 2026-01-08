@@ -12,7 +12,8 @@ type AppTextProps = {
     | "white"
     | "lime"
     | "offWhite"
-    | "danger";
+    | "danger"
+    | "disabled";
   center?: boolean;
   className?: string;
 };
@@ -25,6 +26,7 @@ export const colorMap: Record<NonNullable<AppTextProps["color"]>, string> = {
   lime: "#a4ff53",
   offWhite: "#d9d9d9",
   danger: "#ff0000",
+  disabled: "#424342",
 };
 
 export function AppText({

@@ -108,6 +108,7 @@ export default function Profile() {
           heading="Profile"
           hasNotification={false}
           description="Here you can track personal progress and edit personal details."
+          hasPicture={false}
         />
 
         <View>
