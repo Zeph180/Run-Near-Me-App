@@ -1,7 +1,7 @@
 ﻿import { Pressable, StyleSheet, View } from "react-native";
+import colors from "@/Constants/Colors";
 import { AppText } from "@/components/AppText";
 import { AntDesign } from "@expo/vector-icons";
-import colors from "@/Constants/Colors";
 
 type dayProps = {
   day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
@@ -16,6 +16,7 @@ export function DayCard({
 }: dayProps) {
   let textColor = "disabled";
   let fireColor = colors.disabled;
+  let borderColor = colors.disabled;
 
   if (hasActivity) {
     textColor = "offWhite";
@@ -23,11 +24,12 @@ export function DayCard({
   } else if (isCurrentDay) {
     textColor = "lime";
     fireColor = colors.lime;
+    borderColor = colors.lime;
   }
 
   return (
     <Pressable>
-      <View style={styles.dayCardContainer}>
+      <View style={[styles.dayCardContainer, { borderColor: borderColor }]}>
         <AppText size={"small"} bold color={textColor}>
           {day}
         </AppText>
