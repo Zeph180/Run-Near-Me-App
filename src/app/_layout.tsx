@@ -1,16 +1,29 @@
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import "../../global.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "@/utils/authContext";
+import { useSensorSession } from "@/hooks/useSensorSession";
+import { useAutoRunDetector } from "@/hooks/useAutoRunDetector";
 
-SplashScreen.setOptions({
-  duration: 5000,
-  fade: true,
-});
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const sensorSession = useSensorSession();
+
+  useAutoRunDetector(() => sensorSession.startSession());
+
+  useAutoRunDetector(() => {
+    if (!sensorSession.isRunning) {
+      sensorSession.startSession();
+    }
+  });
+
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
   return (
     <AuthProvider>
       <StatusBar style="auto" />

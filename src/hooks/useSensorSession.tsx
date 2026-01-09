@@ -1,7 +1,11 @@
 ﻿import { useRef, useState } from "react";
 import { Accelerometer, Gyroscope } from "expo-sensors";
 
-export function useSenssorSession() {
+export function useSensorSession() {
+  /**
+   * Refs store active sensor subscriptions.
+   * We use refs because we don't want re-renders when they change.
+   */
   const accelerometerSubscription = useRef<any>(null);
   const gyroscopeSubscription = useRef<any>(null);
 

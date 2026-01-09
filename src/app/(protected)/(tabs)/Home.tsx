@@ -6,6 +6,7 @@ import { DayCard } from "@/components/DayCard";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Colors from "@/Constants/Colors";
 import { AppText } from "@/components/AppText";
+import { useSensorSession } from "@/hooks/useSensorSession";
 
 const weekDays = [
   { day: "Mon", hasActivity: false },
@@ -19,6 +20,8 @@ const weekDays = [
 
 export default function Home() {
   const { user, profile, logout } = useContext(AuthContext);
+  const { isRunning, sessionData, stopSession, startSession } =
+    useSensorSession();
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "short",
