@@ -11,7 +11,7 @@ import { RunState } from "@/Store/runState";
  * Background task called by Expo TaskManager
  * when location updates are received in the background
  */
-TaskManager.defineTask(RUN_DETECTION_TASK, ({ data, error }) => {
+TaskManager.defineTask(RUN_DETECTION_TASK, async ({ data, error }) => {
   if (error || !data) {
     console.error("[RUN DETECTION TASK] error ", error);
     return;
