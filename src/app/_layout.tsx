@@ -6,6 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "@/utils/authContext";
 import { useSensorSession } from "@/hooks/useSensorSession";
 import { useBackgroundTracking } from "@/hooks/useBackgroundTracking";
+import "@/tasks/runDetectionTask";
 
 SplashScreen.preventAutoHideAsync();
 

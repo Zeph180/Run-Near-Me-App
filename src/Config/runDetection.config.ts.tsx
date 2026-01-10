@@ -5,18 +5,18 @@
 
 // Average running starts around 7–9 km/h
 // 2.2 m/s ≈ 7.9 km/h
-export const RUNNING_SPEED_THRESHOLD = 0.2; //2.2;
+export const RUNNING_SPEED_THRESHOLD = 0; //2.2;
 
 /**
  * Number of consecutive GPS readings above threshold
  * required to confirm a running session.
  */
-export const MIN_CONSECUTIVE_READINGS = 1; //3;
+export const MIN_CONSECUTIVE_READINGS = 0; //3;
 
 /**
  * Speed below which we consider the user stopped or walking
  */
-export const STOP_SPEED_THRESHOLD = 0.1; //1.2;
+export const STOP_SPEED_THRESHOLD = 0.0; //1.2;
 
 /**
  * How long speed must stay below STOP_SPEED_THRESHOLD

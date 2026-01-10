@@ -1,100 +1,1 @@
-﻿import { useRef, useState } from "react";
-import { Accelerometer, Gyroscope } from "expo-sensors";
-
-export function useSensorSession() {
-  /**
-   * Refs store active sensor subscriptions.
-   * We use refs because we don't want re-renders when they change.
-   */
-  const accelerometerSubscription = useRef<any>(null);
-  const gyroscopeSubscription = useRef<any>(null);
-
-  const [isRunning, setIsRunning] = useState(false);
-  const [isWalking, setIsWalking] = useState(false);
-
-  /**
-   * Holds all collected sensor data for this session.
-   * Each entry is timestamped so we can replay or analyze later.
-   */
-  const [sessionData, setSessionData] = useState<any[]>([]);
-
-  /**
-   * Starts anew sensor session
-   */
-  const startSession = () => {
-    // Prevent double-starting the session
-    if (isRunning) return;
-
-    setSessionData([]);
-    setIsRunning(true);
-
-    /**
-     * Controls how often sensor data is delivered.
-     * Lower interval = more accuracy but higher battery drain.
-     */
-    Accelerometer.setUpdateInterval(1000);
-    Gyroscope.setUpdateInterval(1000);
-
-    /**
-     * Subscribe to accelerometer updates
-     * Used for motion, step detection, impact analysis
-     */
-    accelerometerSubscription.current = Accelerometer.addListener((accel) => {
-      setSessionData((prev) => [
-        ...prev,
-        {
-          sensor: "accelerometer",
-          x: accel.x,
-          y: accel.y,
-          z: accel.z,
-          timestamp: Date.now(),
-        },
-      ]);
-    });
-
-    /**
-     * Subscribe to gyroscope updates
-     * Used for rotation, orientation, stability tracking
-     */
-    gyroscopeSubscription.current = Gyroscope.addListener((gyro) => {
-      setSessionData((prev) => [
-        ...prev,
-        {
-          sensor: "gyroscope",
-          x: gyro.x,
-          y: gyro.y,
-          z: gyro.z,
-          timestamp: Date.now(),
-        },
-      ]);
-    });
-  };
-
-  /**
-   * Stops the active sensor session
-   * Always unsubscribe to avoid memory leaks and battery drain
-   */
-  const stopSession = () => {
-    accelerometerSubscription.current?.remove();
-    gyroscopeSubscription.current?.remove();
-
-    accelerometerSubscription.current = null;
-    gyroscopeSubscription.current = null;
-
-    setIsRunning(false);
-
-    /**
-     * At this point, sessionData contains the full workout data.
-     * This is where you'd:
-     * - Save to SQLite
-     * - Upload to backend
-     * - Generate session summary
-     */
-  };
-  return {
-    startSession,
-    stopSession,
-    isRunning,
-    sessionData,
-  };
-}
+﻿import { useRef, useState } from "react";import { Accelerometer, Gyroscope } from "expo-sensors";export function useSensorSession() {  /**   * Refs store active sensor subscriptions.   * We use refs because we don't want re-renders when they change.   */  const accelerometerSubscription = useRef<any>(null);  const gyroscopeSubscription = useRef<any>(null);  const [isRunning, setIsRunning] = useState(false);  const [isWalking, setIsWalking] = useState(false);  /**   * Holds all collected sensor data for this session.   * Each entry is timestamped so we can replay or analyze later.   */  const [sessionData, setSessionData] = useState<any[]>([]);  /**   * Starts anew sensor session   */  const startSession = () => {    // Prevent double-starting the session    if (isRunning) return;    setSessionData([]);    setIsRunning(true);    /**     * Controls how often sensor data is delivered.     * Lower interval = more accuracy but higher battery drain.     */    Accelerometer.setUpdateInterval(1000);    Gyroscope.setUpdateInterval(1000);    /**     * Subscribe to accelerometer updates     * Used for motion, step detection, impact analysis     */    accelerometerSubscription.current = Accelerometer.addListener((accel) => {      setSessionData((prev) => [        ...prev,        {          sensor: "accelerometer",          x: accel.x,          y: accel.y,          z: accel.z,          timestamp: Date.now(),        },      ]);    });    /**     * Subscribe to gyroscope updates     * Used for rotation, orientation, stability tracking     */    gyroscopeSubscription.current = Gyroscope.addListener((gyro) => {      setSessionData((prev) => [        ...prev,        {          sensor: "gyroscope",          x: gyro.x,          y: gyro.y,          z: gyro.z,          timestamp: Date.now(),        },      ]);    });  };  /**   * Stops the active sensor session   * Always unsubscribe to avoid memory leaks and battery drain   */  const stopSession = () => {    accelerometerSubscription.current?.remove();    gyroscopeSubscription.current?.remove();    accelerometerSubscription.current = null;    gyroscopeSubscription.current = null;    setIsRunning(false);    /**     * At this point, sessionData contains the full workout data.     * This is where you'd:     * - Save to SQLite     * - Upload to backend     * - Generate session summary     */  };  return {    startSession,    stopSession,    isRunning,    sessionData,  };}

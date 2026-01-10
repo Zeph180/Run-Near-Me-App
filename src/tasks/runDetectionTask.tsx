@@ -19,6 +19,9 @@ TaskManager.defineTask(RUN_DETECTION_TASK, async ({ data, error }) => {
 
   const { locations } = data as { locations: Location.LocationObject[] };
 
+  console.log("📦 FULL BACKGROUND PAYLOAD:");
+  console.log(JSON.stringify(locations, null, 2));
+
   locations.forEach((location) => {
     const speed = location.coords.speed ?? 0;
 
