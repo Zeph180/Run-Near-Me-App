@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start --port 8082",
-    "android": "expo start --android --port 8082",
+    "start": "expo run:android",
+    "android": "expo run:android",
     "ios": "expo start --ios --port 8082",
     "web": "expo start --web --port 8082",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "eas build --profile development --platform android\n"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

@@ -96,6 +96,7 @@ export default function Friends() {
         heading="Friends"
         hasNotification={true}
         description="See what your friends have achieved and get inspired"
+        hasPicture={false}
       />
       <ScrollView>
         <FormInput

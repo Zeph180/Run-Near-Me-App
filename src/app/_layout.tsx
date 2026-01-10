@@ -5,20 +5,21 @@ import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "@/utils/authContext";
 import { useSensorSession } from "@/hooks/useSensorSession";
-import { useAutoRunDetector } from "@/hooks/useAutoRunDetector";
+import { useBackgroundTracking } from "@/hooks/useBackgroundTracking";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const sensorSession = useSensorSession();
 
-  useAutoRunDetector(() => sensorSession.startSession());
-
-  useAutoRunDetector(() => {
-    if (!sensorSession.isRunning) {
-      sensorSession.startSession();
-    }
-  });
+  // useAutoRunDetector(() => sensorSession.startSession());
+  //
+  // useAutoRunDetector(() => {
+  //   if (!sensorSession.isRunning) {
+  //     sensorSession.startSession();
+  //   }
+  // });
+  useBackgroundTracking();
 
   useEffect(() => {
     SplashScreen.hideAsync();

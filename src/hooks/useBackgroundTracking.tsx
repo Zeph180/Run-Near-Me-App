@@ -1,0 +1,87 @@
+﻿import { useEffect, useRef, useState } from "react";
+import * as Location from "expo-location";
+import {
+  PermissionState,
+  requestPermissionsService,
+} from "@/Services/PermissionsService";
+import { RUN_DETECTION_TASK } from "@/Config/runDetection.config.ts";
+
+export function useBackgroundTracking() {
+  const [permissionState, setPermissionState] = useState<PermissionState>({
+    foreground: null,
+    background: null,
+    loading: true,
+    error: null,
+  });
+
+  // Prevent multiple starts
+  const startedRef = useRef(false);
+
+  // 1. Request permissions once
+  useEffect(() => {
+    const initPermissions = async () => {
+      try {
+        const result = await requestPermissionsService();
+        setPermissionState({
+          foreground: result.foreground,
+          background: result.background,
+          loading: false,
+          error: null,
+        });
+        console.log("[PERMISSIONS GRANTED]", result);
+      } catch (err: any) {
+        console.error("[PERMISSIONS ERROR]", err);
+        setPermissionState((prev) => ({
+          ...prev,
+          loading: false,
+          error: err?.message ?? "Permission error",
+        }));
+      }
+    };
+
+    initPermissions();
+  }, []);
+
+  // 2. Start background tracking only when permissions are granted
+  useEffect(() => {
+    const startTracking = async () => {
+      if (
+        permissionState.loading ||
+        permissionState.foreground !== "granted" ||
+        permissionState.background !== "granted"
+      ) {
+        return;
+      }
+
+      if (startedRef.current) return;
+
+      const alreadyStarted =
+        await Location.hasStartedLocationUpdatesAsync(RUN_DETECTION_TASK);
+
+      if (alreadyStarted) {
+        console.log("[BG TRACKING] Already running, skipping start");
+        startedRef.current = true;
+        return;
+      }
+
+      startedRef.current = true;
+
+      console.log("[BG TRACKING] Starting...");
+
+      await Location.startLocationUpdatesAsync(RUN_DETECTION_TASK, {
+        accuracy: Location.Accuracy.Balanced,
+        distanceInterval: 5,
+        timeInterval: 2000,
+        showsBackgroundLocationIndicator: true,
+        foregroundService: {
+          notificationTitle: "Kajjoge is tracking your run",
+          notificationBody: "Keep the app running to track your session",
+        },
+      });
+
+      console.log("[BG TRACKING] Started successfully");
+    };
+
+    startTracking();
+  }, [permissionState]);
+}
